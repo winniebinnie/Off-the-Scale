@@ -32,7 +32,7 @@ public class GrowFishGame extends ApplicationAdapter {
 
 	private int countRaindrops = 0;
 	private long diff = 1000000000;
-	private int spawn = MathUtils.random(0,480-64);
+	private int spawn = MathUtils.random(0,720-64);
 	private Array<Rectangle> raindrops2;
 	private int direction = 0;
 
@@ -41,16 +41,16 @@ public class GrowFishGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 //		img = new Texture("badlogic.jpg");
 
-		bucket = new Bucket(368, 20, 64, 64, "bucket.png");
+		bucket = new Bucket(368, 20, 180, 123, "fish2.png");
 
 		dropImage = new Texture(Gdx.files.internal("droplet.png"));
 		dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
 		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
 		rainMusic.setLooping(true);
 		rainMusic.play();
-
+		//TODO MAKE width and height a vairable
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, 1280, 720);
 
 		raindrops = new Array<Rectangle>();
 		raindrops2  = new Array<Rectangle>();
@@ -73,12 +73,12 @@ public class GrowFishGame extends ApplicationAdapter {
 
 		if(bucket.getRectangle().x < 0)
 			bucket.getRectangle().x = 0;
-		if(bucket.getRectangle().x > 800 - 64)
-			bucket.getRectangle().x = 800 - 64;
+		if(bucket.getRectangle().x > 1280 - 64)
+			bucket.getRectangle().x = 1280 - 64;
 		if(bucket.getRectangle().y < 0)
 			bucket.getRectangle().y = 0;
-		if(bucket.getRectangle().y > 480 - 64)
-			bucket.getRectangle().y = 480 - 64;
+		if(bucket.getRectangle().y > 720 - 64)
+			bucket.getRectangle().y = 720 - 64;
 
 
 		if(TimeUtils.nanoTime() - lastDropTime > diff) {
@@ -120,8 +120,8 @@ public class GrowFishGame extends ApplicationAdapter {
 
 	private void spawnRaindrop() {
 		Rectangle raindrop = new Rectangle();
-		spawn = MathUtils.random(0,480-64);
-		raindrop.x = 800;
+		spawn = MathUtils.random(0,720-64);
+		raindrop.x = 1280;
 		raindrop.y = spawn;
 		raindrop.width = 64;
 		raindrop.height = 64;
@@ -131,7 +131,7 @@ public class GrowFishGame extends ApplicationAdapter {
 	}
 	private void spawnRaindrop1() {
 		Rectangle raindrop = new Rectangle();
-		spawn = MathUtils.random(0,480-64);
+		spawn = MathUtils.random(0,720-64);
 		raindrop.x = 0;
 		raindrop.y = spawn;
 		raindrop.width = 64;
