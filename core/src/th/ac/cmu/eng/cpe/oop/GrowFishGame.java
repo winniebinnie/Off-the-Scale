@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -31,7 +32,9 @@ public class GrowFishGame extends ApplicationAdapter {
 
 	private int countRaindrops = 0;
 	private long diff = 1000000000;
-	private int spawn;
+	private int spawn = MathUtils.random(0,480-64);
+	private Array<Rectangle> raindrops2;
+	private int direction = 0;
 
 	@Override
 	public void create () {
@@ -50,6 +53,7 @@ public class GrowFishGame extends ApplicationAdapter {
 		camera.setToOrtho(false, 800, 480);
 
 		raindrops = new Array<Rectangle>();
+		raindrops2  = new Array<Rectangle>();
 		spawnRaindrop();
 
 
@@ -57,8 +61,6 @@ public class GrowFishGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-
-
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT) )
 			bucket.getRectangle().x -= 500 * Gdx.graphics.getDeltaTime();
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) )
@@ -79,13 +81,19 @@ public class GrowFishGame extends ApplicationAdapter {
 			bucket.getRectangle().y = 480 - 64;
 
 
-		if(TimeUtils.nanoTime() - lastDropTime > diff)
+		if(TimeUtils.nanoTime() - lastDropTime > diff) {
 			spawnRaindrop();
-
+			spawnRaindrop1();
+		}
 		for (Iterator<Rectangle> iter = raindrops.iterator(); iter.hasNext(); ) {
 			Rectangle raindrop = iter.next();
-			raindrop.x -= 200 * Gdx.graphics.getDeltaTime();
-			raindrop.y = spawn;
+			if(direction == -200){
+				raindrop.x -= direction * Gdx.graphics.getDeltaTime();
+			}
+			if(direction == 200){
+				raindrop.x += direction * Gdx.graphics.getDeltaTime();
+			}
+//			raindrop.y = 2;
 			//	raindrop.y += MathUtils.random(-200, 0) * Gdx.graphics.getDeltaTime();
 			if(raindrop.y + 64 < 0)
 				iter.remove();
@@ -96,13 +104,15 @@ public class GrowFishGame extends ApplicationAdapter {
 				iter.remove();
 			}
 		}
-
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		for(Rectangle raindrop: raindrops) {
 			batch.draw(dropImage, raindrop.x, raindrop.y);
+		}
+		for(Rectangle raindrop2: raindrops2) {
+			batch.draw(dropImage, raindrop2.x, raindrop2.y);
 		}
 		batch.draw(bucket.getTexture(), bucket.getRectangle().x, bucket.getRectangle().y);
 		batch.end();
@@ -117,6 +127,18 @@ public class GrowFishGame extends ApplicationAdapter {
 		raindrop.height = 64;
 		raindrops.add(raindrop);
 		lastDropTime = TimeUtils.nanoTime();
+		direction = 200;
+	}
+	private void spawnRaindrop1() {
+		Rectangle raindrop = new Rectangle();
+		spawn = MathUtils.random(0,480-64);
+		raindrop.x = 0;
+		raindrop.y = spawn;
+		raindrop.width = 64;
+		raindrop.height = 64;
+		raindrops.add(raindrop);
+		lastDropTime = TimeUtils.nanoTime();
+		direction = -200;
 	}
 
 	@Override
