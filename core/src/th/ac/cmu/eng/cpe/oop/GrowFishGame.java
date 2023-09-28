@@ -82,13 +82,17 @@ public class GrowFishGame extends ApplicationAdapter {
 
 
 		if(TimeUtils.nanoTime() - lastDropTime > diff) {
-			spawnRaindrop();
-			spawnRaindrop1();
+//			int rand =
+			if (MathUtils.random(0,1) < 0.5){
+				spawnRaindrop();
+			} else{
+				spawnRaindrop1();
+			}
 		}
 		for (Iterator<Rectangle> iter = raindrops.iterator(); iter.hasNext(); ) {
 			Rectangle raindrop = iter.next();
 			if(direction == -200){
-				raindrop.x -= direction * Gdx.graphics.getDeltaTime();
+				raindrop.x += direction * Gdx.graphics.getDeltaTime();
 			}
 			if(direction == 200){
 				raindrop.x += direction * Gdx.graphics.getDeltaTime();
@@ -127,7 +131,7 @@ public class GrowFishGame extends ApplicationAdapter {
 		raindrop.height = 64;
 		raindrops.add(raindrop);
 		lastDropTime = TimeUtils.nanoTime();
-		direction = 200;
+		direction = -200;
 	}
 	private void spawnRaindrop1() {
 		Rectangle raindrop = new Rectangle();
@@ -138,7 +142,7 @@ public class GrowFishGame extends ApplicationAdapter {
 		raindrop.height = 64;
 		raindrops.add(raindrop);
 		lastDropTime = TimeUtils.nanoTime();
-		direction = -200;
+		direction = 200;
 	}
 
 	@Override
