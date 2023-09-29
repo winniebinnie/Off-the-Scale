@@ -43,8 +43,8 @@ public class OffTheScale extends ApplicationAdapter {
 		playerFish = new PlayerFish(368, 20, 180, 123, "fish2.png");
 
 		dropImage = new Texture(Gdx.files.internal("droplet.png"));
-		dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
-		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
+		dropSound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
+		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("underwater.mp3"));
 		rainMusic.setLooping(true);
 		rainMusic.play();
 		camera = new OrthographicCamera();
