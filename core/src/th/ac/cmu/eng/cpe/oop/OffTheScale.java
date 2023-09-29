@@ -61,18 +61,30 @@ public class OffTheScale extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT) ){
+		boolean isFacingLeft = playerFish.isFacingLeft();
+
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			playerFish.getRectangle().x -= 500 * Gdx.graphics.getDeltaTime();
-			playerFish.getSprite().flip(true,false);
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) ) {
+			if (!isFacingLeft) {
+				playerFish.getSprite().flip(true, false);
+				playerFish.setFacingLeft(true);  // Update facing direction
+				System.out.println("Facing Left");
+			}
+		} else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			playerFish.getRectangle().x += 500 * Gdx.graphics.getDeltaTime();
-			playerFish.getSprite().flip(true, false);
+			if (isFacingLeft) {
+				playerFish.getSprite().flip(true, false);
+				playerFish.setFacingLeft(false);  // Update facing direction
+				System.out.println("Facing Right");
+			}
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.UP) )
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 			playerFish.getRectangle().y += 500 * Gdx.graphics.getDeltaTime();
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN) )
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
 			playerFish.getRectangle().y -= 500 * Gdx.graphics.getDeltaTime();
+		}
+
 
 
 		if(playerFish.getRectangle().x < 0)
