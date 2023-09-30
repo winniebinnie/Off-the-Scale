@@ -110,8 +110,7 @@ public class OffTheScale extends ApplicationAdapter {
 			}
 		}
 		ScreenUtils.clear(0, 0, 0.2f, 1);
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
+		camera.update();batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		for(Fish raindrop: raindrops) {
 			batch.draw(dropImage, raindrop.getRectangle().x, raindrop.getRectangle().y);
