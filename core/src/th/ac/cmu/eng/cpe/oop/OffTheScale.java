@@ -83,14 +83,14 @@ public class OffTheScale extends ApplicationAdapter {
 
 
 
-		if(playerFish.getRectangle().x < 0)
+		if (playerFish.getRectangle().x < 0)
 			playerFish.getRectangle().x = 0;
-		if(playerFish.getRectangle().x > 1280 - 64)
-			playerFish.getRectangle().x = 1280 - 64;
-		if(playerFish.getRectangle().y < 0)
+		if (playerFish.getRectangle().x > 1280 - playerFish.getRectangle().width)
+			playerFish.getRectangle().x = 1280 - playerFish.getRectangle().width;
+		if (playerFish.getRectangle().y < 0)
 			playerFish.getRectangle().y = 0;
-		if(playerFish.getRectangle().y > 720 - 64)
-			playerFish.getRectangle().y = 720 - 64;
+		if (playerFish.getRectangle().y > 720 - playerFish.getRectangle().height)
+			playerFish.getRectangle().y = 720 - playerFish.getRectangle().height;
 
 
 		if(TimeUtils.nanoTime() - lastDropTime > 1000000000) {
@@ -116,7 +116,6 @@ public class OffTheScale extends ApplicationAdapter {
 		for(Fish raindrop: raindrops) {
 			batch.draw(dropImage, raindrop.getRectangle().x, raindrop.getRectangle().y);
 		}
-//		batch.draw(playerFish.getSprite(), playerFish.getRectangle().x, playerFish.getRectangle().y);
 		batch.draw(playerFish.getSprite(), playerFish.getRectangle().x, playerFish.getRectangle().y,
 				playerFish.getRectangle().width, playerFish.getRectangle().height);
 
