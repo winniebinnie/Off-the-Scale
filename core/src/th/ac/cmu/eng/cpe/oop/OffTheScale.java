@@ -26,7 +26,6 @@ public class OffTheScale extends ApplicationAdapter {
 	private Array<Fish> raindrops;
 	private long lastDropTime;
 	private int spawn;
-
 	private int score;
 	private String yourScoreName;
 	BitmapFont myBitMap;
@@ -38,7 +37,7 @@ public class OffTheScale extends ApplicationAdapter {
 
 		playerFish = new PlayerFish(368, 20, 180, 123, "fish2.png");
 
-		dropImage = new Texture(Gdx.files.internal("droplet.png"));
+		dropImage = new Texture(Gdx.files.internal("redFish.png"));
 		eatingSound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
 		underwaterAmbienece = Gdx.audio.newMusic(Gdx.files.internal("underwater.mp3"));
 		underwaterAmbienece.setLooping(true);
@@ -47,7 +46,6 @@ public class OffTheScale extends ApplicationAdapter {
 		camera.setToOrtho(false, 1280, 720);
 
 		raindrops = new Array<Fish>();
-
 
 		score = 0;
 		yourScoreName = "score: 0";
