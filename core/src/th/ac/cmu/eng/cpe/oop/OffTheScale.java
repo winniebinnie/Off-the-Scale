@@ -17,13 +17,13 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.Iterator;
 
 public class OffTheScale extends ApplicationAdapter {
-	private Texture dropImage;
+	private Texture redFish;
 	private Sound eatingSound;
 	private Music underwaterAmbienece;
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private PlayerFish playerFish;
-	private Array<Fish> raindrops;
+	private Array<Fish> fishes;
 	private long lastDropTime;
 	private int spawn;
 	private int score;
@@ -37,7 +37,7 @@ public class OffTheScale extends ApplicationAdapter {
 
 		playerFish = new PlayerFish(368, 20, 180, 123, "fish2.png");
 
-		dropImage = new Texture(Gdx.files.internal("redFish.png"));
+		redFish = new Texture(Gdx.files.internal("redFish.png"));
 		eatingSound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
 		underwaterAmbienece = Gdx.audio.newMusic(Gdx.files.internal("underwater.mp3"));
 		underwaterAmbienece.setLooping(true);
@@ -45,7 +45,7 @@ public class OffTheScale extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
 
-		raindrops = new Array<Fish>();
+		fishes = new Array<Fish>();
 
 		score = 0;
 		yourScoreName = "score: 0";
@@ -94,12 +94,12 @@ public class OffTheScale extends ApplicationAdapter {
 		if(TimeUtils.nanoTime() - lastDropTime > 1000000000) {
 			spawnRaindrop();
 		}
-		for (Iterator<Fish> iter = raindrops.iterator(); iter.hasNext(); ) {
-			Fish raindrop = iter.next();
-			raindrop.getRectangle().x += raindrop.getDirection() * Gdx.graphics.getDeltaTime();
-			if(raindrop.getRectangle().y + 64 < 0)
+		for (Iterator<Fish> iter = fishes.iterator(); iter.hasNext(); ) {
+			Fish objFish = iter.next();
+			objFish.getRectangle().x += objFish.getDirection() * Gdx.graphics.getDeltaTime();
+			if(objFish.getRectangle().y + 64 < 0)
 				iter.remove();
-			if(raindrop.getRectangle().overlaps(playerFish.getRectangle())) {
+			if(objFish.getRectangle().overlaps(playerFish.getRectangle())) {
 				eatingSound.play();
 				score++;
 				playerFish.increaseSize(20,20);
@@ -110,8 +110,13 @@ public class OffTheScale extends ApplicationAdapter {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		camera.update();batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		for(Fish raindrop: raindrops) {
-			batch.draw(dropImage, raindrop.getRectangle().x, raindrop.getRectangle().y);
+		for(Fish objFish: fishes) {
+			if(objFish.getDirection() == -200 && !objFish.isFacingLeft())
+			{
+				objFish.getSprite().flip(true, false);
+				objFish.setFacingLeft(true);
+			}
+			batch.draw(objFish.getSprite(), objFish.getRectangle().x, objFish.getRectangle().y, 71, 69);
 		}
 		batch.draw(playerFish.getSprite(), playerFish.getRectangle().x, playerFish.getRectangle().y,
 				playerFish.getRectangle().width, playerFish.getRectangle().height);
@@ -127,17 +132,17 @@ public class OffTheScale extends ApplicationAdapter {
 		spawn = MathUtils.random(0,720-64);
 		Fish raindrop;
 		if (MathUtils.random(0,1) < 0.5)
-			raindrop = new Fish(1280,spawn,64,64,"droplet.png", -200);
+			raindrop = new Fish(1280,spawn,64,64,"redFish.png", -200);
 		else
-			raindrop = new Fish(0,spawn,64,64,"droplet.png", 200);
-		raindrops.add(raindrop);
+			raindrop = new Fish(0,spawn,64,64,"redFish.png", 200);
+		fishes.add(raindrop);
 		lastDropTime = TimeUtils.nanoTime();
 	}
 
 	@Override
 	public void dispose () {
 //		img.dispose();
-		dropImage.dispose();
+		redFish.dispose();
 		playerFish.getTexture().dispose();
 		eatingSound.dispose();
 		underwaterAmbienece.dispose();
