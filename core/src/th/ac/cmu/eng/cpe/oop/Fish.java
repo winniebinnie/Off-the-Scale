@@ -12,13 +12,26 @@ public class Fish {
     private Sprite sprite;
     private boolean isFacingLeft;
 
-    public Fish(int x, int y, int width, int height, String path, int d) {
+//    public Fish(int x, int y, int width, int height, String path, int d) {
+////        this.rectangle = new Rectangle();
+////        this.rectangle.x = x;
+////        this.rectangle.y = y;
+////        this.rectangle.width = width;
+////        this.rectangle.height = height;
+////        this.texture = new Texture(Gdx.files.internal(path));
+////        this.direction = d;
+////        this.sprite = new Sprite(this.texture);
+////        this.isFacingLeft = false;
+////
+////    }
+
+    public Fish(int x, int y, int width, int height, Texture texture, int d, float size) {
         this.rectangle = new Rectangle();
         this.rectangle.x = x;
         this.rectangle.y = y;
-        this.rectangle.width = width;
-        this.rectangle.height = height;
-        this.texture = new Texture(Gdx.files.internal(path));
+        this.rectangle.width = width * size;
+        this.rectangle.height = height * size;
+        this.texture = texture;
         this.direction = d;
         this.sprite = new Sprite(this.texture);
         this.isFacingLeft = false;

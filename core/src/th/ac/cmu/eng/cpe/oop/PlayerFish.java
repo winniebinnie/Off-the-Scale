@@ -31,9 +31,9 @@ public class PlayerFish {
     public boolean isFacingLeft() { return isFacingLeft; }
     public void setFacingLeft(boolean facingLeft) { isFacingLeft = facingLeft; }
 
-    public void increaseSize(float widthIncrement, float heightIncrement){
-        this.rectangle.width += 20;
-        this.rectangle.height += 20;
+    public void increaseSize(double widthIncrement, double heightIncrement){
+        this.rectangle.width += widthIncrement;
+        this.rectangle.height += heightIncrement;
         this.sprite.setSize(this.rectangle.width, this.rectangle.height);
     }
 }
