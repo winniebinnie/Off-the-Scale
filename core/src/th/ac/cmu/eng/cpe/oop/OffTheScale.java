@@ -2,6 +2,7 @@ package th.ac.cmu.eng.cpe.oop;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -38,21 +39,33 @@ public class OffTheScale extends ApplicationAdapter {
 	private int gameOver = 0;  // Flag to track if the game is over
 
 	private Texture backgroundTexture;
+	private Texture farBackgroundTexture;
+	private Texture foregroundBackgroundTexture;
+	private Texture sandBackgroundTexture;
 	private Sprite backgroundSprite;
 
 	private Sprite deadPlayerSprite;
 	private Texture deadPlayerTexture;
 
+	private boolean gameStarted = false;  // Flag to track if the game has started
+
+
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
+		gameStarted = false; // Initially, the game has not started
 
 		backgroundTexture = new Texture(Gdx.files.internal("backgroundOcean.jpg"));
+		farBackgroundTexture = new Texture(Gdx.files.internal("far.png"));
+		foregroundBackgroundTexture = new Texture(Gdx.files.internal("foregound-merged.png"));
+		sandBackgroundTexture = new Texture(Gdx.files.internal("sand.png"));
+
 		backgroundSprite = new Sprite(backgroundTexture);
 
 		playerFish = new PlayerFish(720, 20, 100, 100, "fish2.png");
 
-		deadPlayerTexture = new Texture(Gdx.files.internal("deadFish.png"));
+//		deadPlayerTexture = new Texture(Gdx.files.internal("deadFish.png"));
+		deadPlayerTexture = new Texture(Gdx.files.internal("badlogic.jpg"));
 		deadPlayerSprite = new Sprite(deadPlayerTexture);
 
 		redFish = new Texture(Gdx.files.internal("redFish.png"));
@@ -76,8 +89,38 @@ public class OffTheScale extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-		updateGameState();
-		renderGame();
+		if (!gameStarted) {
+			renderStartScreen();
+		} else {
+			updateGameState();
+			renderGame();
+		}
+	}
+
+	private void renderStartScreen() {
+		// Render the start screen
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
+//		batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+		Gdx.gl.glClearColor(62 / 255f, 121 / 255f, 221 / 255f, 1); // Convert color values to the range [0, 1]
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.draw(farBackgroundTexture, 0, -150, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(sandBackgroundTexture, 0, -200, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		batch.draw(foregroundBackgroundTexture, 0, 0, 1400, 450);
+
+		// You can add text or graphics for your start screen here
+		myBitmap.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+		myBitmap.getData().setScale(3);
+		myBitmap.draw(batch, "Press any key to start", 400, 360);
+
+		batch.end();
+
+		// Check for user input to start the game
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+			gameStarted = true;  // Start the game when any key is pressed
+		}
 	}
 
 	private void updateGameState() {
@@ -161,7 +204,12 @@ public class OffTheScale extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		Gdx.gl.glClearColor(62 / 255f, 121 / 255f, 221 / 255f, 1); // Convert color values to the range [0, 1]
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.draw(farBackgroundTexture, 0, -150, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(sandBackgroundTexture, 0, -200, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		batch.draw(foregroundBackgroundTexture, 0, 0, 1400, 450);
 
 		for (Fish objFish : fishes) {
 			if (objFish.getDirection() == -200 && !objFish.isFacingLeft()) {
