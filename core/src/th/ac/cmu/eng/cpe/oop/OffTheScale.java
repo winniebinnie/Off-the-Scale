@@ -74,8 +74,9 @@ public class OffTheScale extends ApplicationAdapter {
 		skyblueFish = new Texture(Gdx.files.internal("skyblueFish.png"));
 
 		eatingSound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
-		underwaterAmbience = Gdx.audio.newMusic(Gdx.files.internal("underwater.mp3"));
+		underwaterAmbience = Gdx.audio.newMusic(Gdx.files.internal("8bitmusic.mp3"));
 		underwaterAmbience.setLooping(true);
+		underwaterAmbience.setVolume(0.35f);
 		underwaterAmbience.play();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
@@ -83,7 +84,7 @@ public class OffTheScale extends ApplicationAdapter {
 		fishes = new Array<Fish>();
 
 		score = 0;
-		fishEaten = "score: 0";
+		fishEaten = "Scale score: 0";
 		myBitmap = new BitmapFont();
 	}
 
@@ -164,8 +165,10 @@ public class OffTheScale extends ApplicationAdapter {
 				spawnFish();
 			}
 
+			// For loop checking for fish interactions
 			for (Iterator<Fish> iter = fishes.iterator(); iter.hasNext();) {
 				Fish objFish = iter.next();
+
 				objFish.getRectangle().x += objFish.getDirection() * Gdx.graphics.getDeltaTime();
 				if (objFish.getRectangle().x + 100 < 0 || objFish.getRectangle().x > 1280)
 					iter.remove();
@@ -179,7 +182,7 @@ public class OffTheScale extends ApplicationAdapter {
 						eatingSound.play();
 						score++;
 						playerFish.increaseSize(5, 5);
-						fishEaten = "score: " + score;
+						fishEaten = "Scale score: " + score;
 						iter.remove();
 					}
 					else {
@@ -191,7 +194,7 @@ public class OffTheScale extends ApplicationAdapter {
 
 			}
 
-			if (score >= 25) {
+			if (score >= 20) {
 				gameOver = 1;
 			}
 		}
@@ -229,11 +232,11 @@ public class OffTheScale extends ApplicationAdapter {
 		if (gameOver == 1) {
 			// Render the game over screen
 //			batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());  // PLACE a game overScreen
-			myBitmap.draw(batch, "Game Over. Your final score is: " + score, 320, 360);
+			myBitmap.draw(batch, "Game Over. Your final scale score is: " + score, 320, 360);
 
 		} else if(gameOver == 2)
 		{
-			myBitmap.draw(batch, "Game Over. Your final score is: " + score, 320, 360);
+			myBitmap.draw(batch, "Game Over. Your final scale score is: " + score, 320, 360);
 			// DeadFish
 			batch.draw(deadPlayerSprite, playerFish.getRectangle().x, playerFish.getRectangle().y,
 					playerFish.getRectangle().width, playerFish.getRectangle().height);
