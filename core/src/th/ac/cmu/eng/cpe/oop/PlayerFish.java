@@ -11,6 +11,7 @@ public class PlayerFish {
     private Sprite sprite;
     private boolean isFacingLeft;
 
+    // Fish constructor
     public PlayerFish(int x, int y, int width, int height, String path) {
         this.rectangle = new Rectangle();
         this.rectangle.x = x;
@@ -31,6 +32,7 @@ public class PlayerFish {
     public boolean isFacingLeft() { return isFacingLeft; }
     public void setFacingLeft(boolean facingLeft) { isFacingLeft = facingLeft; }
 
+    // Increase fish size
     public void increaseSize(double widthIncrement, double heightIncrement){
         this.rectangle.width += widthIncrement;
         this.rectangle.height += heightIncrement;

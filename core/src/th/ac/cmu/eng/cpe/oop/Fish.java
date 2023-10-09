@@ -20,7 +20,7 @@ public class Fish {
         this.rectangle.height = height * size;
         this.texture = texture;
         this.direction = d;
-        this.sprite = new Sprite(this.texture);
+        this.sprite = new Sprite(this.texture); // Depending on the fish size input from parameter
         this.isFacingLeft = false;
 
     }

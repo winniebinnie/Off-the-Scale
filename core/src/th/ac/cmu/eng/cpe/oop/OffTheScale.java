@@ -42,7 +42,6 @@ public class OffTheScale extends ApplicationAdapter {
 	private Texture farBackgroundTexture;
 	private Texture foregroundBackgroundTexture;
 	private Texture sandBackgroundTexture;
-	private Sprite backgroundSprite;
 
 	private Sprite deadPlayerSprite;
 	private Texture deadPlayerTexture;
@@ -55,24 +54,22 @@ public class OffTheScale extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		gameStarted = false; // Initially, the game has not started
 
+		// Storing images into texture variable
+		// Background images
 		backgroundTexture = new Texture(Gdx.files.internal("backgroundOcean.jpg"));
 		farBackgroundTexture = new Texture(Gdx.files.internal("far.png"));
-		foregroundBackgroundTexture = new Texture(Gdx.files.internal("foregound-merged.png"));
 		sandBackgroundTexture = new Texture(Gdx.files.internal("sand.png"));
 
-		backgroundSprite = new Sprite(backgroundTexture);
-
 		playerFish = new PlayerFish(720, 20, 100, 100, "fish2.png");
-
-//		deadPlayerTexture = new Texture(Gdx.files.internal("deadFish.png"));
+		// Game over fish - badlogic
 		deadPlayerTexture = new Texture(Gdx.files.internal("badlogic.jpg"));
 		deadPlayerSprite = new Sprite(deadPlayerTexture);
-
+		// Fish texture
 		redFish = new Texture(Gdx.files.internal("redFish.png"));
 		yellowFish = new Texture(Gdx.files.internal("yellowFish.png"));
 		pinkFish = new Texture(Gdx.files.internal("pinkFish.png"));
 		skyblueFish = new Texture(Gdx.files.internal("skyblueFish.png"));
-
+		// Added audio and music
 		eatingSound = Gdx.audio.newSound(Gdx.files.internal("eating.mp3"));
 		underwaterAmbience = Gdx.audio.newMusic(Gdx.files.internal("8bitmusic.mp3"));
 		underwaterAmbience.setLooping(true);
@@ -80,7 +77,7 @@ public class OffTheScale extends ApplicationAdapter {
 		underwaterAmbience.play();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1280, 720);
-
+		// Create array of fish for all fishes
 		fishes = new Array<Fish>();
 
 		score = 0;
@@ -103,13 +100,11 @@ public class OffTheScale extends ApplicationAdapter {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-//		batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
+		// Draw background
 		Gdx.gl.glClearColor(62 / 255f, 121 / 255f, 221 / 255f, 1); // Convert color values to the range [0, 1]
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.draw(farBackgroundTexture, 0, -150, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.draw(sandBackgroundTexture, 0, -200, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//		batch.draw(foregroundBackgroundTexture, 0, 0, 1400, 450);
 
 		// You can add text or graphics for your start screen here
 		myBitmap.setColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -206,14 +201,14 @@ public class OffTheScale extends ApplicationAdapter {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
+		// Draw background
 		batch.begin();
-//		batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClearColor(62 / 255f, 121 / 255f, 221 / 255f, 1); // Convert color values to the range [0, 1]
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.draw(farBackgroundTexture, 0, -150, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		batch.draw(sandBackgroundTexture, 0, -200, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//		batch.draw(foregroundBackgroundTexture, 0, 0, 1400, 450);
 
+		// draw all fishes given the sizes
 		for (Fish objFish : fishes) {
 			if (objFish.getDirection() == -200 && !objFish.isFacingLeft()) {
 				objFish.getSprite().flip(true, false);
@@ -222,18 +217,19 @@ public class OffTheScale extends ApplicationAdapter {
 			batch.draw(objFish.getSprite(), objFish.getRectangle().x, objFish.getRectangle().y, objFish.getRectangle().width, objFish.getRectangle().height);
 		}
 
+		// Draw player fish increase in size
 		batch.draw(playerFish.getSprite(), playerFish.getRectangle().x, playerFish.getRectangle().y,
 				playerFish.getRectangle().width, playerFish.getRectangle().height);
 
+		// Keep score
 		myBitmap.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 		myBitmap.draw(batch, fishEaten, 25, 100);
 		myBitmap.getData().setScale(3);
 
+		// check game state
 		if (gameOver == 1) {
 			// Render the game over screen
-//			batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());  // PLACE a game overScreen
 			myBitmap.draw(batch, "Game Over. Your final scale score is: " + score, 320, 360);
-
 		} else if(gameOver == 2)
 		{
 			myBitmap.draw(batch, "Game Over. Your final scale score is: " + score, 320, 360);
@@ -241,16 +237,16 @@ public class OffTheScale extends ApplicationAdapter {
 			batch.draw(deadPlayerSprite, playerFish.getRectangle().x, playerFish.getRectangle().y,
 					playerFish.getRectangle().width, playerFish.getRectangle().height);
 		}
-
 		batch.end();
 	}
-
+	// Spawn fish function
 	private void spawnFish() {
 		spawn = MathUtils.random(0, 720 - 64);
 		Fish objFish;
 		Texture tempTexture;
 		float size;
 		float randomNumber = MathUtils.random(0, 100);
+		// Set spawn chance and fish size
 		if (randomNumber <= 50) {
 			tempTexture = pinkFish;
 			size = 1;
@@ -265,7 +261,7 @@ public class OffTheScale extends ApplicationAdapter {
 			size = 3;
 		}
 
-
+		// Set fish direction
 		if (MathUtils.random(0, 1) < 0.5)
 			objFish = new Fish(1280, spawn, 64, 64, tempTexture, -200, size);
 		else
@@ -274,6 +270,7 @@ public class OffTheScale extends ApplicationAdapter {
 		lastSpawnTime = TimeUtils.nanoTime();
 	}
 
+	// Dispose all resources
 	@Override
 	public void dispose() {
 		backgroundTexture.dispose();
